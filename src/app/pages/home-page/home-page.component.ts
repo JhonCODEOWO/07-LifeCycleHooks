@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect } from '@angular/core';
 
 const log = (...messages: string[]) => {
   console.log(`${messages[0]} %c${messages.slice(1).join(', ')}`, 'color: #bada55');
@@ -15,6 +15,14 @@ export class HomePageComponent {
   constructor() {
     log('Constructor llamado');
   }
+
+  basicEffect = effect((onCleanup)=> {
+    log('onEffect', 'Disparar efectos secundarios');
+
+    onCleanup(()=>{
+      log('onCleanup','Se ejecuta cuando se destruye el efecto');
+    })
+  })
 
   ngOnInit() {
     log('ngOnInit','Runs once after Angular has initialized all the components inputs.');
@@ -36,5 +44,9 @@ export class HomePageComponent {
   }
   ngAfterViewChecked() {
     log('ngAfterViewChecked','Runs every time the components view has been checked for changes.');
+  }
+
+  ngOnDestroy(){
+    log('ngOnDestroy','Runs once the component get destroyed');
   }
 }
