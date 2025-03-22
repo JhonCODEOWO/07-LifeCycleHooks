@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, signal } from '@angular/core';
 
 const log = (...messages: string[]) => {
   console.log(`${messages[0]} %c${messages.slice(1).join(', ')}`, 'color: #bada55');
@@ -8,16 +8,32 @@ const log = (...messages: string[]) => {
   selector: 'app-home-page',
   imports: [],
   templateUrl: './home-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
+
+  traditionalProperty = 'Fernando';
+  signalProperty = signal('Fernando');
+
+  changeTraditional(){
+    this.traditionalProperty = 'Jonathan';
+  }
+
+  changeSignal(){
+    this.signalProperty.set('Jonathan');
+  }
+
   //El constructor es llamado al generarse una instancia del componente
   constructor() {
     log('Constructor llamado');
+
+    setTimeout(()=> {
+      this.traditionalProperty = 'Jonathan'; //No se va a reflejar el cambio en la plantilla usando zoneless
+      this.signalProperty.set('Jonathan') //Si se vaa ver el cambio en la plantilla usando zoneless;
+    }, 2000)
   }
 
   basicEffect = effect((onCleanup)=> {
-    log('onEffect', 'Disparar efectos secundarios');
+    log('on', 'Disparar efectos secundarios');
 
     onCleanup(()=>{
       log('onCleanup','Se ejecuta cuando se destruye el efecto');
