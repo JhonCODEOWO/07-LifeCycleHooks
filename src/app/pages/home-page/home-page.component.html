@@ -1,7 +1,9 @@
 <h1>Home page</h1>
 
 <h3>Tradicional {{traditionalProperty}}</h3>
-<h3>Tradicional {{signalProperty()}}</h3>
+<h3>Señal {{signalProperty()}}</h3>
 
 <button (click)="changeTraditional()">Cambiar tradicional</button>
 <button (click)="changeSignal()">Cambiar señal</button>
+
+<app-title [title]="signalProperty()"/>
